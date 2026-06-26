@@ -1,0 +1,29 @@
+[package]
+name = "kredit_lane"
+version = "0.1.0"
+edition = "2021"
+description = "Milestone-based escrow for SEA freelancers and student creators on Stellar"
+license = "MIT"
+
+[lib]
+crate-type = ["cdylib", "rlib"]
+
+[dependencies]
+soroban-sdk = { version = "21.0.0" }
+
+[dev-dependencies]
+soroban-sdk = { version = "21.0.0", features = ["testutils"] }
+
+# ── Wasm-optimised release profile ──────────────────────────────────────────
+[profile.release]
+opt-level = "z"          # Minimise binary size for Wasm deployment
+overflow-checks = true   # Keep arithmetic safety in release
+debug = false
+strip = "symbols"
+lto = true
+codegen-units = 1
+panic = "abort"          # Required for no_std / Wasm targets
+
+[profile.release-with-logs]
+inherits = "release"
+debug-assertions = true  # Enables Soroban logging in testnet builds
